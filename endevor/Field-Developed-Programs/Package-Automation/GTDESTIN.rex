@@ -50,9 +50,6 @@
   $table_variables = translate($table_variables,"@","/") ;
   $table_variables = translate($table_variables,"@",")") ;
   $table_variables = translate($table_variables,"@","(") ;
-  WantedCSVVariables= "HOST_DSN_PREFIX REMOTE_DSN_PREFIX ",
-                      "TRANS_DESC TRANS_NODE",
-                      "HOST_DSN_DISP REMOTE_DSN_DISP"
   $detail = apiDestinations.2
   /* Parse CSV fields in the Detail record until done */
   Do $column =  1 to Words($table_variables)
@@ -108,12 +105,14 @@ ParseDetailCSVline:
   $rslt = Strip($rslt,'B','"')                             ;
   $rslt = Strip($rslt,'B',"'")                             ;
   if Length($rslt) < 1 then $rslt = ' '
-  thisVariable = WORD($table_variables,$column)
-  If Wordpos(thisVariable,WantedCSVVariables) = 0 then Return
-  if Length($rslt) < 250 then,
-     $temp = WORD($table_variables,$column) '= "'$rslt'"';
-  Else,
-     $temp = WORD($table_variables,$column) "=$rslt"
-  INTERPRET $temp;
-  If rec# < 3 then Say Destination  $temp
+  $Keyword     = WORD($table_variables,$column)
+  Select
+    When $Keyword = 'HOST_DSN_PREFIX'   Then HOST_DSN_PREFIX   = $RSLT
+    When $Keyword = 'REMOTE_DSN_PREFIX' Then REMOTE_DSN_PREFIX = $RSLT
+    When $Keyword = 'TRANS_DESC'        Then TRANS_DESC        = $RSLT
+    When $Keyword = 'TRANS_NODE'        Then TRANS_NODE        = $RSLT
+    When $Keyword = 'HOST_DSN_DISP'     Then HOST_DSN_DISP     = $RSLT
+    When $Keyword = 'REMOTE_DSN_DISP'   Then REMOTE_DSN_DISP   = $RSLT
+    Otherwise  NOP
+  END
   RETURN ;

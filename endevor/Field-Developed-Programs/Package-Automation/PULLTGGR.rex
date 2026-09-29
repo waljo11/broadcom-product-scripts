@@ -13,72 +13,111 @@
    CALL BPXWDYN "INFO FI(PULLTGGR) INRTDSN(DSNVAR) INRDSNT(myDSNT)"
    if RESULT = 0 then TraceRc = 1;
    If TraceRc = 1 then Trace r
-   /* If a DDNAME of ISPPLIB  is allocated, we are in foreground */
-   CALL BPXWDYN "INFO FI(ISPPLIB)  INRTDSN(DSNVAR) INRDSNT(myDSNT)"
-   if RESULT = 0 then runMode = 'FORE'
-   Else               runMode = 'BACK'
+   Value. = ''
+   LocalVariables = ''
 /* PkgExecJobname = MVSVAR('SYMDEF',JOBNAME )   Returns JOBNAME */
 /* Variable settings for each site --->           */
    WhereIam =  WHERE@M1()
-   interpret 'Call' WhereIam "'MyCLS2Library'"
+   $headingVariable = 'MyCLS0Library'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
+   MyCLS0Library = Result
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'MyCLS2Library'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    MyCLS2Library = Result
-   Say 'Running PULLTGGR in' MyCLS2Library
-   interpret 'Call' WhereIam "'MySHIPLibrary'"
-   MySHIPLibrary   = Result
-   interpret 'Call' WhereIam "'TriggerFileName'"
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'TriggerFileName'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    TriggerFileName = Result
-   interpret 'Call' WhereIam "'MyAUTULibrary'"
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'MyAUTULibrary'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    MyAUTULibrary = Result
-   interpret 'Call' WhereIam "'MyHomeAddress'"
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'MyHomeAddress'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    MyHomeAddress = Result
-   interpret 'Call' WhereIam "'MyAUTHLibrary'"
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'MyAUTHLibrary'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    MyAUTHLibrary = Result
-   interpret 'Call' WhereIam "'MyLOADLibrary'"
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'MyLOADLibrary'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    MyLOADLibrary = Result
-   interpret 'Call' WhereIam "'MyDATALibrary'"
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'MyDATALibrary'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    MyDATALibrary = Result
-   ShipRules       = MyDATALibrary"(SHIPRULE)"
-   interpret 'Call' WhereIam "'MyOPT2Library'"
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'MyOPT2Library'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    MyOPT2Library = Result
-   interpret 'Call' WhereIam "'MyOPTNLibrary'"
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'MyOPTNLibrary'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    MyOPTNLibrary = Result
-   interpret 'Call' WhereIam "'MySENULibrary'"
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'MySENULibrary'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    MySENULibrary = Result
-   interpret 'Call' WhereIam "'MySEN2Library'"
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'MySEN2Library'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    MySEN2Library = Result
-   interpret 'Call' WhereIam "'AltIDOrderfile'"
-   AltIDOrderfile= Result
-   interpret 'Call' WhereIam "'MyCLS0Library'"
-   MyCLS0Library  = Result
-   interpret 'Call' WhereIam "'MyCLS2Library'"
-   MyCLS2Library  = Result
-   interpret 'Call' WhereIam "'AltIDAcctCode'"
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'AltIDOrderfile'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
+   AltIDOrderfile = Result
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'AltIDAcctCode'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    AltIDAcctCode = Result
-   interpret 'Call' WhereIam "'AltIDJobClass'"
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'AltIDJobClass'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    AltIDJobClass = Result
-   interpret 'Call' WhereIam "'TransmissionMethods'"
-   TransmissionMethods  = Result
-   interpret 'Call' WhereIam "'TransmissionModels'"
-   TransmissionModels   = Result
-   interpret 'Call' WhereIam "'SHLQ'"
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'TransmissionMethods'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
+   TransmissionMethods = Result
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'TransmissionModels'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
+   TransmissionModels = Result
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'SHLQ'
+   interpret 'Call' WhereIam $headingVariable
+   Value.$headingVariable = Result
    SHLQ = Result
-   sa= 'TransmissionMethods =' TransmissionMethods
-   sa= 'TransmissionModels  =' TransmissionModels
+   LocalVariables = LocalVariables $headingVariable
 /* <---- Variable settings for each site          */
-   Arg DSN_Prefix ModelDSN . ;
-   DSN_Prefix = Strip(DSN_Prefix,'B',',') ;
-   ModelDSN   = Strip(ModelDSN,'B',',') ;
-   ModelDSN   = Strip(ModelDSN)
-   Sa= "DSN_Prefix =" DSN_Prefix
-   Sa= "ModelDSN =" ModelDSN
+/* Arg DSN_Prefix ModelDSN . ;                                        */
+   MySEN2Library = MySEN2Library
+   MySEN2Library = Strip(MySEN2Library,'B',',') ;
+   MySEN2Library = Strip(MySEN2Library)
+   Sa= "MySEN2Library =" MySEN2Library
    Jobnbr = '   '
 /*                                                                    */
 /* This Rexx participates in the submission of Endevor Package        */
 /* Shipment jobs. It is called by the Endevor sweep job.              */
-/*                                                                    */
-/*                                                                    */
-/* Allocate and prepare files for TBL#TOOL execution                  */
-/*                                                                    */
 /*                                                                    */
    Submit_RC = 0  ;
    Last_Submit_RC = 0  ;
@@ -88,35 +127,18 @@
    IF HOUR = '00' THEN HOUR = '0'
    MINUTE = SUBSTR(NOW,4,2) ;
    CurrentTime= HOUR || MINUTE ;
-   SENDNODE =  MVSVAR(SYSNAME)
    HSYSEXEC = MyCLS2Library
    Userid = USERID()
    Call AllocateTriggerForUpdate ;
-   Trace off
    "EXECIO * DISKR TRIGGER (STEM $tablerec. FINIS" ;
    /* Build all the ...pos variables from heading */
-   Call ProcessTriggerFileHeading;
+   Call ProcessTriggerHeading;
 /*                                                                    */
-   $All_VARIABLES = $table_variables,
-        " PkgExecJobname ParmVal",
-        " Jobname Userid Date8 Date6 Time8 Time6 Destination",
-        " MySHIPLibrary MyCLS0Library MyCLS2Library MyHomeAddress",
-        " MyAUTULibrary MyAUTHLibrary MyLOADLibrary ",
-        " MyOPT2Library MyOPTNLibrary MySEN2Library MySENULibrary",
-        " AltIDOrderfile",
-        " HSYSEXEC DB2DSN MODE SHPHLQ STEPLIB",
-        " ShipOutput SHLQ ",
-        " AltIDAcctCode AltIDJobClass ",
-        " Hostprefix Rmteprefix Transmissn ",
-        " HOSTHLQ    RMOTHLQ    XMITMETH   ",
-        " Destin VNBLSDST SENDNODE Typrun Notify TARGnode "
-/*                                                                    */
+   seconds = '000001' /* Wait 1 second between submitting jobs  */
    Do trg# = 1 to $tablerec.0
       status      = Substr($tablerec.trg#,Stpos,1) ;
       If status /= "_" & status /= " " &,
          status /= "B"                 then iterate;
-      ShipOutput = 'OUT'
-      If status  = "B" then ShipOutput = 'BAC' ;
       Package     = Substr($tablerec.trg#,Packagepos,16) ;
       System      = Strip(Substr($tablerec.trg#,Systempos,08));
       Destination = Strip(Substr($tablerec.trg#,Destinationpos,08));
@@ -126,52 +148,66 @@
       IF Date = TodaysDate &,
          Time > CurrentTime then iterate ;
       Call  GetDestinationInfoViaCSV;
+      If Hostprefix  = "?" then Iterate
       Jobname     = Strip(Substr($tablerec.trg#,Jobnamepos,08)) ;
       If Jobname  = 'useridX' then Jobname = USERID() || 'X'
-      PkgExecJobname = Jobname ;
-/*
-      OwnerMask   = Strip(Substr($tablerec.trg#,OwnerMaskpos,08)) ;
-      QualifierMask =,
-         Strip(Substr($tablerec.trg#,QualifierMaskpos,08)) ;
-      BindPackageMask =,
-         Strip(Substr($tablerec.trg#,BindPackageMaskpos,08)) ;
-      PathMask =,
-         Strip(Substr($tablerec.trg#,PathMaskpos,08)) ;
-*/
-      TYPRUN      = Strip(Substr($tablerec.trg#,TYPRUNpos,6)) ;
-      if Length(Typrun) > 0 then,
-         Typrun = ',TYPRUN='Typrun
-/*
-      Notify      = Strip(Substr($tablerec.trg#,Notifypos,8)) ;
-      if Length(Notify) < 2 then,
-         Notify = '&SYSUID'
-*/
-      seconds = '000001' /* Wait 1 second before submitting next*/
-      Call WaitAwhile ;
+      $headingVariable = 'PkgExecJobname'
+      Value.$headingVariable = Jobname
+      LocalVariables = LocalVariables $headingVariable
+      /* Support more variables */
+      SENDNODE =  MVSVAR(SYSNAME)
+      $headingVariable = 'SENDNODE'
+      Value.$headingVariable = SENDNODE
+      LocalVariables = LocalVariables $headingVariable
+      $headingVariable = 'Notify'
+      Value.$headingVariable = USERID()
+      LocalVariables = LocalVariables $headingVariable
+      $headingVariable = 'Userid'
+      Value.$headingVariable = USERID()
+      LocalVariables = LocalVariables $headingVariable
+      ShipOutput = 'OUT'
+      If status  = "B" then ShipOutput = 'BAC' ;
+      $headingVariable = 'ShipOutput'
+      Value.$headingVariable = ShipOutput
+      LocalVariables = LocalVariables $headingVariable
       Date8  = DATE('S')
+      $headingVariable = 'Date8'
+      Value.$headingVariable = Date8
+      LocalVariables = LocalVariables $headingVariable
       Date6  = substr(Date8,3);
+      $headingVariable = 'Date6'
+      Value.$headingVariable = Date6
+      LocalVariables = LocalVariables $headingVariable
       Temp   = TIME('L')
       Time8  = Substr(Temp,1,2) ||,
                Substr(Temp,4,2) ||,
                Substr(Temp,7,2) ||,
                Substr(Temp,10,2) ;
+      $headingVariable = 'Time8'
+      Value.$headingVariable = Time8
+      LocalVariables = LocalVariables $headingVariable
       Time6  = Substr(Temp,1,2) ||,
                Substr(Temp,4,2) ||,
                Substr(Temp,7,2) ;
-      ParmVal = Date8 Time8
+      $headingVariable = 'Time6'
+      Value.$headingVariable = Time6
+      LocalVariables = LocalVariables $headingVariable
       NewStatus = 's' ;
       Call UPDATE_MODEL_FROM_VARIABLES ; /* Submits Shipment job */
-      $headingVariable = 'St'
-      pos= $Starting_$position.$headingVariable
+      /* Update Trigger to show s for job submitted */
+      $TGGR_$headingVariable = 'St'
+      pos= $TGGR_Starting_$pos.$TGGR_$headingVariable
       if Last_Submit_RC = 0 then,
          Do
          $tablerec.trg# = Overlay(NewStatus,$tablerec.trg#,Stpos) ;
          $tablerec.trg# = ,
             Overlay(CurrentTime,$tablerec.trg#,Timepos) ;
-         pos= $Starting_$position.$headingVariable
+         pos= $TGGR_Starting_$pos.$TGGR_$headingVariable
          If Substr(Jobnbr,1,1) > ' ' then,
             $tablerec.trg# = ,
                Overlay(Jobnbr,$tablerec.trg#,Jobnumbpos);
+         If trg# < $tablerec.0 then,
+            Call WaitAwhile ;
          End
       Else,
          $tablerec.trg# = Overlay("?",$tablerec.trg#,Stpos) ;
@@ -182,29 +218,19 @@
    if TraceRc = 1 then Say "PULLTGGR- exiting....  "
    Exit(Submit_RC) ;
 /*                                                                    */
-/* The subroutine below is modified from the TBL#TOOL                 */
+/* Substitute Variables in the MODEL                                  */
 /*                                                                    */
 UPDATE_MODEL_FROM_VARIABLES:
    if TraceRc = 1 then Say "UPDATE_MODEL_FROM_VARIABLES:      "
    Sa= "UPDATE_MODEL_FROM_VARIABLES:       "
-   Method# = Wordpos(Transmissn,TransmissionMethods) ;
-   If Method# = 0 then,
-      Do
-      NewStatus = 'R' ;
-      Return ;
-      End;
-   /* If Destination has its own model, use it      */
-   /* Otherwise, use the one from TransmissionModels*/
-   ShipModel = Word(TransmissionModels,Method#);
-   interpret 'Call' WhereIam "'UseModel."Destination"'"
-   OverRideModel   = Result
-   If OverRideModel /= "Not-valid" &,
-      OverRideModel /= "" &,
-      Substr(OverRideModel,1,09) /= 'UseModel.' then,
-      ShipModel = OverRideModel
    /* Determine Shipment JCL Model */
+   Method# = Wordpos(Transmissn,TransmissionMethods) ;
+   If Method# = 0 then Exit
+   $headingVariable = 'TransmissionModels'
+   TransmissionModels = Value.$headingVariable
+   ShipModel = Word(TransmissionModels,Method#);
    STRING = "ALLOC DD(MODEL) ",
-              " DA('"ModelDSN"("ShipModel")')",
+              " DA('"MySEN2Library"("ShipModel")')",
               " SHR REUSE ";
    sa= 'Destination' Destination 'is' ShipModel
    CALL BPXWDYN STRING;
@@ -231,11 +257,8 @@ UPDATE_MODEL_FROM_VARIABLES:
    Call Submit_Job ;
    Drop $Model. ;
    RETURN;
-/*                                                                    */
-/* The subroutine below is borrowed from the TBL#TOOL                 */
-/*                                                                    */
 EVALUATE_SYMBOLICS:
-   if TraceRc = 1 then Say "EVALUATE_SYMBOLICS:               "
+   If TraceRc = 1 then Say "EVALUATE_SYMBOLICS:               "
    DO FOREVER;
       $PLACE_VARIABLE = POS('&',$Model.$LINE,$PLACE_VARIABLE)
       IF $PLACE_VARIABLE = 0 THEN LEAVE;
@@ -244,18 +267,26 @@ EVALUATE_SYMBOLICS:
       $table_word = WORD(SUBSTR($temp_$LINE,($PLACE_VARIABLE+1)),1);
       $table_word = TRANSLATE($table_word,'_','-') ;
       $varlen = LENGTH($table_word) + 1 ;
-      if WORDPOS($table_word,$All_VARIABLES) = 0 then,
-         do
+      if WORDPOS($table_word,LocalVariables) > 0 then,
+         Do
+         $headingVariable = $table_word
+         SYMBVALUE  = Value.$headingVariable
+         End;
+      Else,
+      if WORDPOS($table_word,TGGR_variables) > 0 then,
+         Do
+         $TGGR_$headingVariable = $table_word
+         pos= $TGGR_Starting_$pos.$TGGR_$headingVariable
+         SYMBVALUE  = Word(Substr($tablerec.trg#,pos),1)
+         If $table_word = 'Typrun' &,
+            Length(SYMBVALUE) > 0 then,
+               SYMBVALUE = ',TYPRUN='SYMBVALUE
+         End
+      Else,
+         Do
          $PLACE_VARIABLE = $PLACE_VARIABLE + 1 ;
          iterate;
-         end;
-      $temp_word = VALUE($table_word) ;
-      IF DATATYPE($temp_word,S) = 9 THEN,
-         $temp = 'SYMBVALUE = ' $temp_word ;
-      ELSE,
-         $temp = "SYMBVALUE = '"$temp_word"'" ;
-      IF TraceRc = 1 then say $temp
-      INTERPRET $temp;
+         End
       SA= 'SYMBVALUE  = ' SYMBVALUE ;
       $tail = SUBSTR($Model.$LINE,($PLACE_VARIABLE+$varlen)) ;
       if Substr($tail,1,1) = $delimiter then,
@@ -315,7 +346,7 @@ WaitAwhile:
   /*                                                               */
   seconds = Abs(seconds)
   seconds = Trunc(seconds,0)
-  If runMode = 'BACK' | TraceRc = 1 then,
+  If TraceRc = 1 then,
      Say "PULLTGGR- Waiting for" seconds "seconds at " DATE(S) TIME()
   /* AOPBATCH and BPXWDYN are IBM programs */
   CALL BPXWDYN  "ALLOC DD(STDOUT) DUMMY SHR REUSE"
@@ -325,9 +356,8 @@ WaitAwhile:
   parm = "sleep "seconds
   Address LINKMVS "AOPBATCH parm"
   Return
-ProcessTriggerFileHeading :
-   if TraceRc = 1 then Say "ProcessTriggerFileHeading : "
-/* The subroutine below is modified from the TBL#TOOL                 */
+ProcessTriggerHeading :
+   if TraceRc = 1 then Say "ProcessTriggerHeading : "
    $tbl = 1 ;
    $TableHeadingChar = '*'
    $LastWord = Word($tablerec.$tbl,Words($tablerec.$tbl));
@@ -342,42 +372,58 @@ ProcessTriggerFileHeading :
       $PositionSpclChar = POS('*',$tmprec) ;
    $tmpreplaces = '-,.'$TableHeadingChar ;
    $tmprec = TRANSLATE($tmprec,' ',$tmpreplaces);
-   $table_variables = strip($tmprec);
-   $Heading_Variable_count = WORDS($table_variables) ;
-   If $Heading_Variable_count /=,
+   TGGR_variables = strip($tmprec);
+   $TGGR_Variable_count = WORDS(TGGR_variables) ;
+   If $TGGR_Variable_count /=,
       Words(Substr($tablerec.$tbl,2)) then,
       Do
       Say 'PULLTGGR- Invalid table Heading:' $tablerec.$tbl
       exit(12)
       End
-   $heading = Overlay(' ',$tablerec.$tbl,1); /* Space leading * */
-   Do $pos = 1 to $Heading_Variable_count
-      $HeadingVariable = Word($table_variables,$pos) ;
-      $tmp = Wordindex($Heading,$pos) ;
-      $Starting_$position.$HeadingVariable = $tmp
-      $tmp = $tmp + Length(Word($Heading,$pos)) -1 ;
-      $Ending_$position.$HeadingVariable = $tmp
-      /* Build ...pos variables and values */
-      tmp = ""$HeadingVariable"pos =",
-             $Starting_$position.$HeadingVariable
-      Sa= tmp
-      Interpret tmp
-   end; /* DO $pos = 1 to $Heading_Variable_count */
-   $Heading = Translate($Heading,' ','-*')
+   $TGGR_heading = Overlay(' ',$tablerec.$tbl,1); /* Space leading * */
+   Do $pos = 1 to $TGGR_Variable_count
+      $TGGR_$headingVariable = Word(TGGR_variables,$pos) ;
+      $tmp = Wordindex($TGGR_heading,$pos) ;
+      $TGGR_Starting_$pos.$TGGR_$headingVariable = $tmp
+      If $TGGR_$headingVariable = 'St' then Stpos = $tmp
+      If $TGGR_$headingVariable = 'Package' then Packagepos =$tmp
+      If $TGGR_$headingVariable = 'System' then Systempos   =$tmp
+      If $TGGR_$headingVariable = 'Destination' then,
+         Destinationpos =$tmp
+      If $TGGR_$headingVariable = 'Date'    then Datepos    =$tmp
+      If $TGGR_$headingVariable = 'Time'    then Timepos    =$tmp
+      If $TGGR_$headingVariable = 'Jobname' then Jobnamepos =$tmp
+      If $TGGR_$headingVariable = 'Typrun' then TYPRUNpos   =$tmp
+      $tmp = $tmp + Length(Word($TGGR_heading,$pos)) -1 ;
+      $TGGR_$Ending_$pos.$TGGR_$headingVariable = $tmp
+      Say $TGGR_$headingVariable,
+          $TGGR_Starting_$pos.$TGGR_$headingVariable $tmp
+   end; /* DO $pos = 1 to TGGR_Variable_count */
+   $TGGR_heading = Translate($TGGR_heading,' ','-*')
    Return ;
 GetDestinationInfoViaCSV:
    if TraceRc = 1 then Say "GetDestinationInfoViaCSV:   "
-   Hostprefix  = "?"
-   Rmteprefix  = "?"
-   Transmissn  = "?"
-   TARGnodeix  = "?"
+   Hostprefix  = "?"; Rmteprefix  = "?";
+   Transmissn  = "?"; TARGnodeix  = "?";
    /* Set values for Hostprefix and Rmteprefix */
    /*     From the site definition             */
    /*  Call CSV to Get Destination information  */
    SiteVariables = GTDESTIN(Destination)
-   If Words(SiteVariables) < 3 then Return
-   Hostprefix  = Word(SiteVariables,1)
-   Rmteprefix  = Word(SiteVariables,2)
-   Transmissn  = Word(SiteVariables,3)
-   TARGnode    = Word(SiteVariables,4)
+   If Words(SiteVariables) < 4 then Return
+   $headingVariable = 'Hostprefix'
+   Hostprefix              = Word(SiteVariables,1)
+   Value.$headingVariable = Hostprefix
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'Rmteprefix'
+   Rmteprefix              = Word(SiteVariables,2)
+   Value.$headingVariable = Rmteprefix
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'Transmissn'
+   Transmissn              = Word(SiteVariables,3)
+   Value.$headingVariable = Transmissn
+   LocalVariables = LocalVariables $headingVariable
+   $headingVariable = 'TARGnode'
+   TARGnode                = Word(SiteVariables,4)
+   Value.$headingVariable = TARGnode
+   LocalVariables = LocalVariables $headingVariable
    Return

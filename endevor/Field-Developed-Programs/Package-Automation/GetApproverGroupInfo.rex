@@ -1,19 +1,17 @@
 /*   REXX  */
-
-   /* Use the variable and value you have for Package name */
+/* Find on the BroadCom product Scripts GitHub:                */
+/* https://github.com/BroadcomMFD/broadcom-product-scripts     */
+/* Receive tha Package name to use for finding Approver Groups */
+   isItThere = ,
+     BPXWDYN("INFO FI(GETAPPRV) INRTDSN(DSNVAR) INRDSNT(myDSNT)")
+   If isItThere = 0 then Trace ?r
    Arg Package ;
-
-   /* Initially the package has quorum=0 for all Approver Grps */
-   Highest_QUORUM_CNT = 0
-
    /* Prepare and run a CSV call to fetch Approvals for Package */
-
+   /* Return the highest Quorum Count across Approver Groups    */
+   Highest_QUORUM_CNT = 0
    Call CSV_to_List_Package_Approvals
-
    Call Parse_CSV_for_Package_Approvals
-
-   Exit
-
+   Return Highest_QUORUM_CNT
 CSV_to_List_Package_Approvals:
   /* Get Package Approver group information       */
    STRING = "ALLOC DD(EXTRACTM) LRECL(4000) BLKSIZE(32000) ",
@@ -35,7 +33,6 @@ CSV_to_List_Package_Approvals:
    QUEUE "     TO DDNAME 'EXTRACTM' "
    QUEUE "     ."
    "EXECIO 3 DISKW BSTIPT01 (FINIS ";
-
    CALL BPXWDYN "INFO FI(CONLIB) INRTDSN(DSNVAR) INRDSNT(myDSNT)"
    if RESULT = 0 then,
       Do
@@ -44,19 +41,14 @@ CSV_to_List_Package_Approvals:
       End
    Else,
       ADDRESS LINK 'BC1PCSV0'   ;  /* load from authlib */
-
    call_rc = rc ;
-
    CALL BPXWDYN "FREE DD(BSTIPT01)" ;
    CALL BPXWDYN "FREE DD(C1MSGS1)" ;
    CALL BPXWDYN "FREE DD(BSTERR)" ;
-
    If call_rc > 4 then Return
    "EXECIO * DISKR EXTRACTM (STEM CSV. finis"
    CALL BPXWDYN "FREE DD(EXTRACTM)" ;
-
    Return
-
 Parse_CSV_for_Package_Approvals:
   /* To Search the package action data in CSV format.              */
   /* Identify matches with Rules file, determining Ship Dests      */
@@ -68,14 +60,6 @@ Parse_CSV_for_Package_Approvals:
   $table_variables = translate($table_variables,"@","/") ;
   $table_variables = translate($table_variables,"@",")") ;
   $table_variables = translate($table_variables,"@","(") ;
-  /* Indicate which CSV variables you want */
-  WantedCSVVariables= ,
-        "PKG_ID APPR_GRP_NAME ",
-        "OVERALL_APPR_STATUS QUORUM_CNT"
-  WantedCSVVariables= "QUORUM_CNT"
-  WantedCSVVariables= "APPR_GRP_NAME OVERALL_APPR_STATUS ",
-                      "QUORUM_CNT SEQ#"
-
   Do rec# = 2 to CSV.0
      $detail = CSV.rec#
      /* Parse CSV fields in the Detail record until done */
@@ -85,12 +69,10 @@ Parse_CSV_for_Package_Approvals:
      If QUORUM_CNT > Highest_QUORUM_CNT then,
         Highest_QUORUM_CNT = QUORUM_CNT
      If SEQ# = 1 then,
-        Say APPR_GRP_NAME OVERALL_APPR_STATUS QUORUM_CNT
+        Sa= APPR_GRP_NAME OVERALL_APPR_STATUS QUORUM_CNT
   End; /* Do rec# = 1 to CSV.0 */
-
-  say "Highest_QUORUM_CNT="   Highest_QUORUM_CNT
+  sa= "Highest_QUORUM_CNT="   Highest_QUORUM_CNT
   RETURN ;
-
 ParseDetailCSVline:
   /* Find the data for the current $column */
   $dlmchar = Substr($detail,1,1);
@@ -127,12 +109,13 @@ ParseDetailCSVline:
   $rslt = Strip($rslt,'B','"')                             ;
   $rslt = Strip($rslt,'B',"'")                             ;
   if Length($rslt) < 1 then $rslt = ' '
-  thisVariable = WORD($table_variables,$column)
-  If Wordpos(thisVariable,WantedCSVVariables) = 0 then Return
-  if Length($rslt) < 250 then,
-     $temp = WORD($table_variables,$column) '= "'$rslt'"';
-  Else,
-     $temp = WORD($table_variables,$column) "=$rslt"
-  INTERPRET $temp;
-  If rec# < 0 then Say $temp
+  $keyword     = WORD($table_variables,$column)
+  Select
+    When $keyword = 'APPR_GRP_NAME'       then APPR_GRP_NAME = $rslt
+    When $keyword = 'OVERALL_APPR_STATUS' then,
+       OVERALL_APPR_STATUS= $rslt
+    When $keyword = 'QUORUM_CNT'          then QUORUM_CNT    = $rslt
+    When $keyword = 'SEQ#'                then SEQ#          = $rslt
+    Otherwise  NOP
+  End
   RETURN ;
