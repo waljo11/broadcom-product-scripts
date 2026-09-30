@@ -37,11 +37,13 @@ If you know that the python "request" package has not been installed, or if you 
 
 ## Other items in the Folder
 
-Other items in this folder are Endevor exit code examples that query ServiceNow. Endevor functions listed below, each use a COBOL exit, a REXX subroutine and a Python subroutine. Functions include:
-- **Exit 2**. Before element action exit code to validate a CCID value with ServiceNow. 
-- **Exit 7**. Package exit code to validate (a portion of) a package namee with ServiceNow. 
-- **C1UEXTR2** and **C1UEXTR7** are Rexx subroutines to the COBOL exit programs. The C1UEXTR2 module is coded to not call the SERVINOW subroutine when the requested CCID already exists on an element. So for example, Update and MOVE actions might find the requested CCID value already on the element and bypass the validation.    
-- **SERVINOW** is a REXX subroutine to both C1UEXTR2 and C1UEXTR7 and is the member that calls the Python code to validate a 10-byte value with ServiceNow.
+Some items for the ServiceNow interface are found in other folcers of this GitHub. Links to them are listed here:
+
+- For CCID validations, use the COBOL exit **[C1UEXT02 With RexDriver.cob](https://github.com/BroadcomMFD/broadcom-product-scripts/blob/main/endevor/Field-Developed-Programs/Exit-Examples/C1UEXT02%20With%20RexDriver.cob)**. Also use the **C1UEXTR2 With RexDriver.rex** subroutine in the current folder. It only calls the SERVINOW subroutine when necessary, and attempts to avoids unnecessary calls, such as repeating validations for values previously checked. So for example, Update and MOVE actions might find the requested CCID value already on the element and bypass a repeated validation.  
+
+- For validating (a portion of) a package name with ServiceNowpackage names, use the COBOL exit **[C1UEXT07 WithRexDriver.cob](https://github.com/BroadcomMFD/broadcom-product-scripts/blob/main/endevor/Field-Developed-Programs/Exit-Examples/C1UEXT07%20WithRexDriver.cob)**. Also use the **C1UEXTR7 With RexDriver.rex** subroutine in the current folder.  
+
+- **SERVINOW.rex** is a subroutine for both C1UEXTR2 and C1UEXTR7 and is the member that calls the Python code to validate a 10-byte value with ServiceNow.
 
 
 REXX examples contain code that allows on-demand REXX tracing to be invoked - without modifying the REXX code. The examples allow you to limit the tracing to a list of userids. You can create your own list of userids or eliminate it altogether. Then, simply allocate the name of the REXX program to DUMMY. For example, to engage the Trace for C1UEXTR2, then allocate C1UEXTR2 to DUMMY. There are two ways to do the allocation:
