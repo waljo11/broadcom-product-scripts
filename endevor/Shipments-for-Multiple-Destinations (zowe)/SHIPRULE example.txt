@@ -1,8 +1,0 @@
-*Environment Stage System-- Subsys-- Destination St Jobname-  Date Time  Typrun 
- DEV         *     FINANCE  REMOTEST MTS32       _  TESTMD32  +0   0000      
-*QAS         9     FINANCE  *        MTS21       _  SENDTS21  +0   0000  HOLD   
- PRD         2     *        *        MTS32       _  PRODMD32  +0   0000     
-*PRD         P     *        *        MTS32       _  JMTS21    +0   0000         
- ADMIN       *     CATSNDVR *        MTS32       _  ADMNMD32  +0   0000    
-
-	
