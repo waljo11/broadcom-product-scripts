@@ -8,6 +8,17 @@
    Arg Caller Ticket# TSOorBatch .
    If TSOorBatch = 'B' then say "SERVINOW - validating" Ticket#
    NEWSTACK
+   /* Ensure the Ticket# is in the right format.              */
+   $numbers = '0123456789'                              
+   Do char# = 1 to length(Ticket#)                      
+      nextChar = Substr(Ticket#,char#,1)                
+      If VERIFY(nextChar,$numbers) then iterate         
+      Leave                                             
+   End                                                  
+   Tail = Substr(Ticket#,char#)                         
+   if char# >= length(Ticket#) |,                        
+      VERIFY(Tail,$numbers) > 0 then Return "Invalid Ticket#"         
+                                       
    /* Designate how many validated Ticket Numbers to remember */
    Message = Caller'/SERVINOW - Ticket Number ' Ticket# ||,
                 ' is defined to Service-Now'
