@@ -39,8 +39,7 @@ USS_FILE_PATH = "/u/your/Secured/Credentials/location.txt"
 user, pwd = load_uss_credentials(USS_FILE_PATH)
 print("Successfully loaded credentials from USS.")
 # 2. Use them for your subsequent processing/API calls
-print(f"Target User ID: {user}")
-print(f"Target pswd   : {pwd}")
+# print(f"Target User ID: {user}")
 # Proceed with your processing...
 
 ##  Build the complete url  here
