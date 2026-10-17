@@ -5,9 +5,7 @@ IPPORT=9999
 CKPT=0
 FILEOPT=REPLACE
 FILETYPE=FILE
-USERID=sonaruser
-PASSWORD=yourpswrd
-*
+//         DD DISP=SHR,DSN=Your.Credentials.DSN  *user+pswd*
 //XCOM2    DD *,SYMBOLS=JCLONLY                            XCOM#INC
 FILE=/your/uss/inbound/&Member.&extension
 LFILE=&Dataset(&Member)
