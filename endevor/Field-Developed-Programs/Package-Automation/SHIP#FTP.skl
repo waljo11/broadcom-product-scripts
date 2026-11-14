@@ -433,7 +433,12 @@ $$
 //WHATNTFY ENDIF                                                                
 //* *--------------------------------------------* SHIP#FTP (CONT.)  *          
 //FTPSUBMT EXEC PGM=FTP,REGION=2048K,TIME=800              SHIP#FTP             
-//NETRC    DD DISP=SHR,DSN=&SYSUID..ENDEVOR.NETRC(SHIPPING)                     
+//*-----------------------------------------------------------------*
+//* Protect the NETRC dataset with a UACC(NONE) profile      
+//NETRC    DD DISP=SHR,DSN=&SYSUID..ENDEVOR.NETRC(SHIPPING)              
+//* SYSFTPD overrides default FTP.DATA to enforce TLS (FTPS)        
+//SYSFTPD  DD DISP=SHR,DSN=your.SECURED.SYSFTPD        
+/*-----------------------------------------------------------------*         
 //SYSTSPRT DD SYSOUT=*                                                          
 //SYSPRINT DD SYSOUT=*                                                          
 //SYSUDUMP  DD SYSOUT=Q                                                         

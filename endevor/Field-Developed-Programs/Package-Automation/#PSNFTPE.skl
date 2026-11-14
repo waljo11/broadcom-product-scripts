@@ -16,7 +16,12 @@
 //ABNLIGNR  DD DUMMY
 //SYSPRINT  DD SYSOUT=*
 //SYSABEND  DD SYSOUT=*
-//NETRC    DD DISP=SHR,DSN=&SYSUID..ENDEVOR.NETRC(SHIPPING)
+//*-----------------------------------------------------------------*
+//* Protect the NETRC dataset with a UACC(NONE) profile      
+//NETRC    DD DISP=SHR,DSN=&SYSUID..ENDEVOR.NETRC(SHIPPING)              
+//* SYSFTPD overrides default FTP.DATA to enforce TLS (FTPS)        
+//SYSFTPD  DD DISP=SHR,DSN=your.SECURED.SYSFTPD        
+/*-----------------------------------------------------------------*
 //SYSOUT    DD SYSOUT=*
 //*UTPUT    DD SYSOUT=*
 //OUTPUT   DD DSN=&&FTPOUT,
